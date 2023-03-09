@@ -1,12 +1,11 @@
 package com.therevotech
 
 import com.therevotech.data.user.MongoUserDataSource
-import com.therevotech.data.user.User
-import com.therevotech.data.user.UserDataSource
 import io.ktor.server.application.*
 import com.therevotech.plugins.*
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import com.therevotech.security.hashing.SHA256HashingService
+import com.therevotech.security.token.JwtTokenService
+import com.therevotech.security.token.TokenConfig
 import org.litote.kmongo.coroutine.coroutine
 import org.litote.kmongo.reactivestreams.KMongo
 
@@ -24,18 +23,19 @@ fun Application.module() {
     ).coroutine
         .getDatabase(dbName)
 
-    GlobalScope.launch {
-        val userDataSource = MongoUserDataSource(db)
-        val user = User(
-            username = "test",
-            password = "password",
-            salt = "salt"
-        )
-        userDataSource.insertUser(user)
-    }
+    val userDataSource = MongoUserDataSource(db)
+    val tokenService = JwtTokenService()
+    val tokenConfig = TokenConfig(
+        issuer = environment.config.property("jwt.issuer").getString(),
+        audience = environment.config.property("jwt.audience").getString(),
+        expiresIn = 365L * 1000L * 60L * 60L * 24L,
+        secret = System.getenv("JWT_SECRET")
+    )
+
+    val hashingService = SHA256HashingService()
 
     configureSerialization()
     configureMonitoring()
-    configureSecurity()
+    configureSecurity(tokenConfig)
     configureRouting()
 }
