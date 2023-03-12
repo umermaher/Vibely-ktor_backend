@@ -37,5 +37,5 @@ fun Application.module() {
     configureSerialization()
     configureMonitoring()
     configureSecurity(tokenConfig)
-    configureRouting()
+    configureRouting(userDataSource, hashingService, tokenService, tokenConfig)
 }
