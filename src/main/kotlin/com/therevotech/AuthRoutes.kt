@@ -1,6 +1,5 @@
 package com.therevotech
 
-import com.therevotech.authenticate
 import com.therevotech.data.requests.AuthRequest
 import com.therevotech.data.requests.AuthResponse
 import com.therevotech.data.user.User
@@ -10,6 +9,10 @@ import com.therevotech.security.hashing.SaltedHash
 import com.therevotech.security.token.TokenClaim
 import com.therevotech.security.token.TokenConfig
 import com.therevotech.security.token.TokenService
+import com.therevotech.utils.AUTHENTICATE
+import com.therevotech.utils.SECRET
+import com.therevotech.utils.SIGN_IN
+import com.therevotech.utils.SIGN_UP
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
@@ -22,7 +25,7 @@ fun Route.signUp(
     hashingService: HashingService,
     userDataSource: UserDataSource
 ){
-    post ("signup") {
+    post (SIGN_UP) {
         val request = call.receiveOrNull<AuthRequest>() ?: kotlin.run{
             call.respond(HttpStatusCode.BadRequest)
             return@post
@@ -48,7 +51,10 @@ fun Route.signUp(
             return@post
         }
 
-        call.respond(HttpStatusCode.OK)
+        call.respond(
+            status = HttpStatusCode.OK,
+            message = true
+        )
     }
 }
 
@@ -58,7 +64,7 @@ fun Route.signIn(
     tokenService: TokenService,
     tokenConfig: TokenConfig
 ){
-    post ("signin") {
+    post (SIGN_IN) {
         val request = call.receiveOrNull<AuthRequest>() ?: kotlin.run{
             call.respond(HttpStatusCode.BadRequest)
             return@post
@@ -102,7 +108,7 @@ fun Route.signIn(
 
 fun Route.authenticate(){
     authenticate {
-        get("authenticate") {
+        get(AUTHENTICATE) {
             call.respond(HttpStatusCode.OK)
         }
     }
@@ -110,7 +116,7 @@ fun Route.authenticate(){
 
 fun Route.getSecretInfo(){
     authenticate{
-        get("secret") {
+        get(SECRET) {
             val principal = call.principal<JWTPrincipal>()
             val userId = principal?.getClaim("userId",String::class)
             call.respond(HttpStatusCode.OK,"Your userId is $userId")
