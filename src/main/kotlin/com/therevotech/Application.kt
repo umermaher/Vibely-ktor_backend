@@ -1,11 +1,14 @@
 package com.therevotech
 
 import com.therevotech.data.user.MongoUserDataSource
+import com.therevotech.data.user.User
 import io.ktor.server.application.*
 import com.therevotech.plugins.*
 import com.therevotech.security.hashing.SHA256HashingService
 import com.therevotech.security.token.JwtTokenService
 import com.therevotech.security.token.TokenConfig
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.litote.kmongo.coroutine.coroutine
 import org.litote.kmongo.reactivestreams.KMongo
 
