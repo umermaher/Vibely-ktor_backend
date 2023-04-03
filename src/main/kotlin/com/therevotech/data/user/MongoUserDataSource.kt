@@ -1,5 +1,6 @@
 package com.therevotech.data.user
 
+import com.therevotech.data.message.Message
 import org.litote.kmongo.coroutine.CoroutineDatabase
 import org.litote.kmongo.eq
 
@@ -19,5 +20,18 @@ class MongoUserDataSource(
             return false
         }
         return users.insertOne(user).wasAcknowledged()
+    }
+
+    override suspend fun getAllMembers(): List<UserDto> {
+        val users = users.find().toList()
+        val usersDto = ArrayList<UserDto>()
+        users.forEach {
+            usersDto.add(
+                UserDto(
+                    username = it.username, imageUrl = it.imageUrl
+                )
+            )
+        }
+        return usersDto
     }
 }

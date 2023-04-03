@@ -1,27 +1,28 @@
 package com.therevotech.plugins
 
-import com.therevotech.authenticate
 import com.therevotech.data.user.UserDataSource
-import com.therevotech.getSecretInfo
+import com.therevotech.room.RoomController
+import com.therevotech.routes.*
 import com.therevotech.security.hashing.HashingService
-import com.therevotech.security.hashing.SHA256HashingService
 import com.therevotech.security.token.TokenConfig
 import com.therevotech.security.token.TokenService
-import com.therevotech.signIn
-import com.therevotech.signUp
 import io.ktor.server.routing.*
 import io.ktor.server.application.*
+import org.koin.java.KoinJavaComponent.inject
 
 fun Application.configureRouting(
     userDataSource: UserDataSource,
     hashingService: HashingService,
     tokenService: TokenService,
-    tokenConfig: TokenConfig
+    tokenConfig: TokenConfig,
+    roomController: RoomController
 ) {
     routing {
         signIn(hashingService, userDataSource, tokenService, tokenConfig)
         signUp(hashingService, userDataSource)
         authenticate()
         getSecretInfo()
+        chatSocket(roomController)
+        getAllMessages(roomController)
     }
 }

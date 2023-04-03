@@ -1,18 +1,21 @@
 package com.therevotech
 
+import com.therevotech.data.message.Message
+import com.therevotech.data.message.MongoMessageDataSource
 import com.therevotech.data.user.MongoUserDataSource
-import com.therevotech.data.user.User
-import io.ktor.server.application.*
 import com.therevotech.plugins.*
+import com.therevotech.room.RoomController
 import com.therevotech.security.hashing.SHA256HashingService
 import com.therevotech.security.token.JwtTokenService
 import com.therevotech.security.token.TokenConfig
+import io.ktor.server.application.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.litote.kmongo.coroutine.coroutine
 import org.litote.kmongo.reactivestreams.KMongo
+import java.util.logging.Logger
 
-fun main(args: Array<String>) : Unit =
+fun main(args: Array<String>): Unit =
     io.ktor.server.netty.EngineMain.main(args)
 //    embeddedServer(Netty, port = 8080, host = "0.0.0.0", module = Application::module)
 //        .start(wait = true)
@@ -27,6 +30,8 @@ fun Application.module() {
         .getDatabase(dbName)
 
     val userDataSource = MongoUserDataSource(db)
+    val messageDataSource = MongoMessageDataSource(db)
+
     val tokenService = JwtTokenService()
     val tokenConfig = TokenConfig(
         issuer = environment.config.property("jwt.issuer").getString(),
@@ -37,8 +42,14 @@ fun Application.module() {
 
     val hashingService = SHA256HashingService()
 
+    val roomController = RoomController(
+        messageDataSource = messageDataSource,
+        userDataSource = userDataSource
+    )
+
     configureSerialization()
     configureMonitoring()
     configureSecurity(tokenConfig)
-    configureRouting(userDataSource, hashingService, tokenService, tokenConfig)
+    configureSockets()
+    configureRouting(userDataSource, hashingService, tokenService, tokenConfig, roomController)
 }

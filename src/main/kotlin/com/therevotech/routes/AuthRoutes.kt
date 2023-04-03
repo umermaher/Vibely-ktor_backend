@@ -1,4 +1,4 @@
-package com.therevotech
+package com.therevotech.routes
 
 import com.therevotech.data.requests.AuthRequest
 import com.therevotech.data.requests.AuthResponse
@@ -9,10 +9,7 @@ import com.therevotech.security.hashing.SaltedHash
 import com.therevotech.security.token.TokenClaim
 import com.therevotech.security.token.TokenConfig
 import com.therevotech.security.token.TokenService
-import com.therevotech.utils.AUTHENTICATE
-import com.therevotech.utils.SECRET
-import com.therevotech.utils.SIGN_IN
-import com.therevotech.utils.SIGN_UP
+import com.therevotech.utils.*
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
@@ -47,13 +44,13 @@ fun Route.signUp(
 
         val wasAcknowledged = userDataSource.insertUser(user)
         if(!wasAcknowledged){
-            call.respond(HttpStatusCode.Conflict)
+            call.respond(HttpStatusCode.UnprocessableEntity,"User with name already exist!")
             return@post
         }
 
         call.respond(
             status = HttpStatusCode.OK,
-            message = true
+            message = REQUEST_SUCCESSFUL
         )
     }
 }
