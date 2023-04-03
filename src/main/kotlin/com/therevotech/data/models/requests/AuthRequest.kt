@@ -1,4 +1,4 @@
-package com.therevotech.data.requests
+package com.therevotech.data.models.requests
 
 import kotlinx.serialization.Serializable
 

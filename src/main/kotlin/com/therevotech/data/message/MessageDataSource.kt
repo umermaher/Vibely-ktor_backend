@@ -1,6 +1,6 @@
 package com.therevotech.data.message
 
-import com.therevotech.data.user.UserDto
+import com.therevotech.data.models.Message
 
 interface MessageDataSource {
 

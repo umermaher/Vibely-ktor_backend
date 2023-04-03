@@ -1,9 +1,9 @@
 package com.therevotech.room
 
-import com.therevotech.data.message.Message
+import com.therevotech.data.models.Message
 import com.therevotech.data.message.MessageDataSource
 import com.therevotech.data.user.UserDataSource
-import com.therevotech.data.user.UserDto
+import com.therevotech.data.models.UserDto
 import io.ktor.websocket.*
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json

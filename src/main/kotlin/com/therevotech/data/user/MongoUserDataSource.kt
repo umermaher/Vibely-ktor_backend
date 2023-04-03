@@ -1,8 +1,8 @@
 package com.therevotech.data.user
 
-import com.therevotech.data.message.Message
-import org.bson.types.ObjectId
-import org.litote.kmongo.KMongo
+import com.therevotech.data.models.Location
+import com.therevotech.data.models.User
+import com.therevotech.data.models.UserDto
 import org.litote.kmongo.coroutine.CoroutineDatabase
 import org.litote.kmongo.eq
 import org.litote.kmongo.setValue

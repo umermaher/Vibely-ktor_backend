@@ -1,12 +1,12 @@
 package com.therevotech.routes
 
-import com.therevotech.data.requests.AuthRequest
-import com.therevotech.data.user.Image
-import com.therevotech.data.user.Location
-import com.therevotech.data.user.UserDataSource
+import com.therevotech.data.models.Image
+import com.therevotech.data.models.Location
+import com.therevotech.data.models.Members
+import com.therevotech.data.models.MessageList
+import com.therevotech.data.user.*
 import com.therevotech.room.MemberAlreadyExistException
 import com.therevotech.room.RoomController
-import com.therevotech.routes.authenticate
 import com.therevotech.session.ChatSession
 import com.therevotech.utils.LOCATION
 import com.therevotech.utils.MEMBERS
@@ -59,7 +59,12 @@ fun Route.chatSocket(roomController: RoomController){
 fun Route.getAllMessages(roomController: RoomController){
     authenticate {
         get(MESSAGES) {
-            call.respond(HttpStatusCode.OK,roomController.getAllMessage())
+            call.respond(
+                status = HttpStatusCode.OK,
+                message = MessageList(
+                    roomController.getAllMessage()
+                )
+            )
         }
     }
 }
@@ -67,7 +72,12 @@ fun Route.getAllMessages(roomController: RoomController){
 fun Route.getAllMembers(roomController: RoomController){
     authenticate {
         get(MEMBERS) {
-            call.respond(HttpStatusCode.OK,roomController.getAllMembers())
+            call.respond(
+                status = HttpStatusCode.OK,
+                message = Members(
+                    roomController.getAllMembers()
+                )
+            )
         }
     }
 }

@@ -1,4 +1,4 @@
-package com.therevotech.data.user
+package com.therevotech.data.models
 
 import kotlinx.serialization.Serializable
 
@@ -18,4 +18,14 @@ data class Location(
 @Serializable
 data class Image(
     val imageUrl:String
+)
+
+@Serializable
+data class Members(
+    val members:List<UserDto>
+)
+
+@Serializable
+data class MessageList(
+    val messages:List<Message>
 )

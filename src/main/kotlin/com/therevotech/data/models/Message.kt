@@ -1,4 +1,4 @@
-package com.therevotech.data.message
+package com.therevotech.data.models
 
 import kotlinx.serialization.Serializable
 import org.bson.codecs.pojo.annotations.BsonId

@@ -1,8 +1,8 @@
 package com.therevotech.routes
 
-import com.therevotech.data.requests.AuthRequest
-import com.therevotech.data.requests.AuthResponse
-import com.therevotech.data.user.User
+import com.therevotech.data.models.requests.AuthRequest
+import com.therevotech.data.models.requests.AuthResponse
+import com.therevotech.data.models.User
 import com.therevotech.data.user.UserDataSource
 import com.therevotech.security.hashing.HashingService
 import com.therevotech.security.hashing.SaltedHash
