@@ -24,5 +24,8 @@ fun Application.configureRouting(
         getSecretInfo()
         chatSocket(roomController)
         getAllMessages(roomController)
+        getAllMembers(roomController)
+        updateLocation(userDataSource)
+        updateAvatar(userDataSource)
     }
 }

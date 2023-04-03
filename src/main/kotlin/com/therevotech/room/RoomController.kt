@@ -55,7 +55,8 @@ class RoomController(
             members.remove(username)
     }
 
-    suspend fun getAllMembers():List<UserDto> = userDataSource.getAllMembers()
-
+    suspend fun getAllMembers():List<UserDto> {
+        return userDataSource.getAllMembers()
+    }
 }
 

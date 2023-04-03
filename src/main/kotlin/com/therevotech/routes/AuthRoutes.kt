@@ -44,7 +44,7 @@ fun Route.signUp(
 
         val wasAcknowledged = userDataSource.insertUser(user)
         if(!wasAcknowledged){
-            call.respond(HttpStatusCode.UnprocessableEntity,"User with name already exist!")
+            call.respond(HttpStatusCode.UnprocessableEntity,"User with this name already exist!")
             return@post
         }
 
@@ -69,7 +69,7 @@ fun Route.signIn(
 
         val user = userDataSource.getUserByUsername(request.username)
         if(user == null){
-            call.respond(HttpStatusCode.Conflict,"Incorrect username!")
+            call.respond(HttpStatusCode.Conflict,"Invalid Credentials!")
             return@post
         }
 
@@ -82,7 +82,7 @@ fun Route.signIn(
         )
 
         if(!isValidPassword){
-            call.respond(HttpStatusCode.Conflict,"Incorrect password!")
+            call.respond(HttpStatusCode.Conflict,"Invalid Credentials!")
             return@post
         }
 
@@ -90,7 +90,7 @@ fun Route.signIn(
             config = tokenConfig,
             TokenClaim(
                 name = "userId",
-                value = user.id.toString()
+                value = user.id
             )
         )
 

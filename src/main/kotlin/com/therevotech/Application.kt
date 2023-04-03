@@ -1,8 +1,10 @@
 package com.therevotech
 
 import com.therevotech.data.message.Message
+import com.therevotech.data.message.MessageDataSource
 import com.therevotech.data.message.MongoMessageDataSource
 import com.therevotech.data.user.MongoUserDataSource
+import com.therevotech.data.user.UserDataSource
 import com.therevotech.plugins.*
 import com.therevotech.room.RoomController
 import com.therevotech.security.hashing.SHA256HashingService
@@ -29,8 +31,8 @@ fun Application.module() {
     ).coroutine
         .getDatabase(dbName)
 
-    val userDataSource = MongoUserDataSource(db)
-    val messageDataSource = MongoMessageDataSource(db)
+    val userDataSource: UserDataSource = MongoUserDataSource(db)
+    val messageDataSource: MessageDataSource = MongoMessageDataSource(db)
 
     val tokenService = JwtTokenService()
     val tokenConfig = TokenConfig(
@@ -46,6 +48,7 @@ fun Application.module() {
         messageDataSource = messageDataSource,
         userDataSource = userDataSource
     )
+
 
     configureSerialization()
     configureMonitoring()
