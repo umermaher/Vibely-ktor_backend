@@ -25,7 +25,7 @@ import io.ktor.websocket.*
 import kotlinx.coroutines.channels.consumeEach
 
 fun Route.chatSocket(roomController: RoomController){
-//    authenticate {
+    authenticate {
         webSocket("chat-socket") {
             val session = call.sessions.get<ChatSession>()
             if (session == null) {
@@ -53,7 +53,7 @@ fun Route.chatSocket(roomController: RoomController){
                 roomController.tryDisconnect(session.username)
             }
         }
-//    }
+    }
 }
 
 fun Route.getAllMessages(roomController: RoomController){
