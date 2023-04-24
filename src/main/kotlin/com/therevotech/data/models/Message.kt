@@ -7,7 +7,7 @@ import org.bson.types.ObjectId
 @Serializable
 data class Message(
     val text: String,
-    val attachment:String ?= null,
+    val attachment:String = "",
     val username: String,
     val avatar: String = "",
     val timestamp: Long,
